@@ -15,7 +15,7 @@
 在我刚开始接到这样的需求时，我把所有可能出现的样式写在同一个布局上，然后在Adapter中getItem()加载布局时，通过判断列表项的position来决定显示的布局（通过设置显示或者隐藏布局中的元素，也就是View.setVisibility(V">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 单个ListView加载多种布局">
-<meta property="og:url" content="http://morphin3.github.io/2014/08/18/Android-单个ListView加载多种布局/index.html">
+<meta property="og:url" content="http://morphin3.github.io/2014/11/27/Android-单个ListView加载多种布局/index.html">
 <meta property="og:site_name" content="Morphin3's Blog">
 <meta property="og:description" content="场景公司上班时候经常会被产品锦鲤提出这样的需求：这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，整个可以下拉刷新或者上拉加载….  
 在我刚开始接到这样的需求时，我把所有可能出现的样式写在同一个布局上，然后在Adapter中getItem()加载布局时，通过判断列表项的position来决定显示的布局（通过设置显示或者隐藏布局中的元素，也就是View.setVisibility(V">
@@ -60,8 +60,6 @@
 					
 						<li><a href="/archives">Archives</a></li>
 					
-						<li><a href="/about">About</a></li>
-					
 					<li>
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
@@ -82,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/08/18/Android-单个ListView加载多种布局/" title="Android 单个ListView加载多种布局" itemprop="url">Android 单个ListView加载多种布局</a>
+      <a href="/2014/11/27/Android-单个ListView加载多种布局/" title="Android 单个ListView加载多种布局" itemprop="url">Android 单个ListView加载多种布局</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Morphin3" target="_blank" itemprop="author">Morphin3</a>
 		
   <p class="article-time">
-    <time datetime="2014-08-18T10:50:46.000Z" itemprop="datePublished"> 发表于 2014-08-18</time>
+    <time datetime="2014-11-27T10:50:46.000Z" itemprop="datePublished"> 发表于 2014-11-27</time>
     
   </p>
 </header>
@@ -98,13 +96,13 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#场景"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置有规律可循时"><span class="toc-number">2.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置有规律可循时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置无关时"><span class="toc-number">3.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置无关时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#合理的解决方案"><span class="toc-number">4.</span> <span class="toc-text">合理的解决方案</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#场景"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置有规律可循时"><span class="toc-number">2.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置有规律可循时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置无关时"><span class="toc-number">3.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置无关时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#合理的解决方案"><span class="toc-number">4.</span> <span class="toc-text">合理的解决方案</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="场景">场景</h2><p>公司上班时候经常会被产品锦鲤提出这样的需求：<br>这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，整个可以下拉刷新或者上拉加载….  </p>
+		<h3 id="场景">场景</h3><p>公司上班时候经常会被产品锦鲤提出这样的需求：<br>这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，整个可以下拉刷新或者上拉加载….  </p>
 <p>在我刚开始接到这样的需求时，我把所有可能出现的样式写在同一个布局上，然后在<code>Adapter</code>中<code>getItem()</code>加载布局时，通过判断列表项的position来决定显示的布局（通过设置显示或者隐藏布局中的元素，也就是<code>View.setVisibility(View.VISIBLE);View.setVisibility(View.GONE);</code>）</p>
-<h2 id="当显示的不同种类布局根据列表索引位置有规律可循时">当显示的不同种类布局根据列表索引位置有规律可循时</h2><p>比如，<code>position</code>为0时显示布局A，<code>position</code>为N时显示布局B（可以定义一个全局变量<code>mPosition</code>来保存N），其余显示布局C<br>这么做很容易就能实现  </p>
+<h3 id="当显示的不同种类布局根据列表索引位置有规律可循时">当显示的不同种类布局根据列表索引位置有规律可循时</h3><p>比如，<code>position</code>为0时显示布局A，<code>position</code>为N时显示布局B（可以定义一个全局变量<code>mPosition</code>来保存N），其余显示布局C<br>这么做很容易就能实现  </p>
 <pre><code>@Override
 public View getView(int position, View view, ViewGroup viewGroup) {
     <span class="keyword">...</span>
@@ -117,7 +115,7 @@ public View getView(int position, View view, ViewGroup viewGroup) {
     }
     <span class="keyword">...</span>
 }
-</code></pre><h2 id="当显示的不同种类布局根据列表索引位置无关时">当显示的不同种类布局根据列表索引位置无关时</h2><p>但现实中的需求，不同种类的布局往往跟列表索引位置无关，此时单单通过列表索引位置来区分布局已经不现实了。<br>这个时候我们需要某个标识来判断显示何种布局，这也很容易就能实现，与服务端商量在加在的数据<code>Model</code>种加一个字段<code>String type</code>  </p>
+</code></pre><h3 id="当显示的不同种类布局根据列表索引位置无关时">当显示的不同种类布局根据列表索引位置无关时</h3><p>但现实中的需求，不同种类的布局往往跟列表索引位置无关，此时单单通过列表索引位置来区分布局已经不现实了。<br>这个时候我们需要某个标识来判断显示何种布局，这也很容易就能实现，与服务端商量在加在的数据<code>Model</code>种加一个字段<code>String type</code>  </p>
 <pre><code>@Override
 public View getView(int position, View view, ViewGroup viewGroup) {
     <span class="keyword">...</span>
@@ -168,7 +166,7 @@ public <span class="keyword">View</span> getView(int position, <span class="keyw
     ...
 }
 </code></pre><p>显示某一种的同时，必须隐藏掉另外的任何一种，呵呵，假设以后又冒出来一个第11种布局，那么每个分支中就又要再添加代码来显示或者隐藏那个布局。<br>什么，每个分支都要改？！<br>Bang！！！！这显然不是很好的解决方法。  </p>
-<h2 id="合理的解决方案">合理的解决方案</h2><p>那么怎样才是最好的解决方法呢？<br>看一下<code>BaseAdapter</code>的文档发现有两个没有用过的方法，<code>getViewTypeCount()</code> 和 <code>getItemViewType()</code>，前者可以返回布局类型总数，后者则可以返回具体使用哪种视图。具体可参见官方<a href="http://developer.android.com/reference/android/widget/Adapter.html" title="Adapter" target="_blank" rel="external">SDK</a></p>
+<h3 id="合理的解决方案">合理的解决方案</h3><p>那么怎样才是最好的解决方法呢？<br>看一下<code>BaseAdapter</code>的文档发现有两个没有用过的方法，<code>getViewTypeCount()</code> 和 <code>getItemViewType()</code>，前者可以返回布局类型总数，后者则可以返回具体使用哪种视图。具体可参见官方<a href="http://developer.android.com/reference/android/widget/Adapter.html" title="Adapter" target="_blank" rel="external">SDK</a></p>
 <p>首先先定义好布局类型常量，如果是10种，就定义10个，另外需要再定义一个常亮保存类型总数。还是跟之前一样，假设我们跟服务端约定好要加载的数据model中有一个字段用于区分布局类型，这次我们用<code>int</code>类型，也就是定义一个字段<code>int type</code>  </p>
 <pre><code><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_A = <span class="number">0</span>;   <span class="comment">//类型A</span>
 <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_B = <span class="number">1</span>;   <span class="comment">//类型B</span>
@@ -218,7 +216,7 @@ public View getView(int position, View convertView, ViewGroup viewGroup) {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/listview/">listview</a><a href="/tags/布局/">布局</a>
+  <span></span> <a href="/tags/android/">android</a><a href="/tags/listview/">listview</a><a href="/tags/布局/">布局</a>
   </div>
 
 </div>
@@ -227,7 +225,7 @@ public View getView(int position, View convertView, ViewGroup viewGroup) {
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://morphin3.github.io/2014/08/18/Android-单个ListView加载多种布局/" data-title="Android 单个ListView加载多种布局 | Morphin3&#39;s Blog" data-tsina="1807629794" class="share clearfix">
+	  <div data-url="http://morphin3.github.io/2014/11/27/Android-单个ListView加载多种布局/" data-title="Android 单个ListView加载多种布局 | Morphin3&#39;s Blog" data-tsina="1807629794" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -240,11 +238,19 @@ public View getView(int position, View convertView, ViewGroup viewGroup) {
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/01/07/Android万能ViewHolder，大大提升你写Adapter的速度/" title="Android万能ViewHolder，大大提升你写Adapter的速度">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Android万能ViewHolder，大大提升你写Adapter的速度</span>
+</a>
+</div>
+
 
 <div class="next">
-<a href="/2014/07/11/My-Journey/"  title="My Journey">
+<a href="/2014/10/26/MarkDown正确的学习姿势/"  title="MarkDown正确的学习姿势">
  <strong>下一篇：</strong><br/> 
- <span>My Journey
+ <span>MarkDown正确的学习姿势
 </span>
 </a>
 </div>
@@ -253,7 +259,7 @@ public View getView(int position, View convertView, ViewGroup viewGroup) {
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2014/08/18/Android-单个ListView加载多种布局/" data-title="Android 单个ListView加载多种布局" data-url="http://morphin3.github.io/2014/08/18/Android-单个ListView加载多种布局/"></div>
+	<div class="ds-thread" data-thread-key="2014/11/27/Android-单个ListView加载多种布局/" data-title="Android 单个ListView加载多种布局" data-url="http://morphin3.github.io/2014/11/27/Android-单个ListView加载多种布局/"></div>
 </section>
 
 
@@ -263,7 +269,7 @@ public View getView(int position, View convertView, ViewGroup viewGroup) {
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#场景"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置有规律可循时"><span class="toc-number">2.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置有规律可循时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置无关时"><span class="toc-number">3.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置无关时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#合理的解决方案"><span class="toc-number">4.</span> <span class="toc-text">合理的解决方案</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#场景"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置有规律可循时"><span class="toc-number">2.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置有规律可循时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置无关时"><span class="toc-number">3.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置无关时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#合理的解决方案"><span class="toc-number">4.</span> <span class="toc-text">合理的解决方案</span></a></li></ol>
  
   </div>
 
@@ -279,7 +285,15 @@ public View getView(int position, View convertView, ViewGroup viewGroup) {
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/guide/" title="guide">guide<sup>1</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/教程/" title="教程">教程<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/guide/" title="guide">guide<sup>2</sup></a></li>
 			
 		
 			
@@ -295,11 +309,7 @@ public View getView(int position, View convertView, ViewGroup viewGroup) {
 			
 		
 			
-		
-			
-		
-			
-		
+				<li><a href="/tags/adapter/" title="adapter">adapter<sup>1</sup></a></li>
 			
 		
 		</ul>

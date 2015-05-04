@@ -3,23 +3,26 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="baidu-site-verification" content="qoe2CRr68d" />
-    <title>Morphin3&#39;s Blog</title>
+  
+    <title>Android万能ViewHolder，大大提升你写Adapter的速度 | Morphin3&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Morphin3">
     
 
     
-    <meta name="description" content="Morphin3&apos;s Teeny-tiny World">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Morphin3's Blog">
-<meta property="og:url" content="http://morphin3.github.io/index.html">
+    <meta name="description" content="场景最近公司发布需求，上线版本的速度非常快。相信写Android的童鞋都有体会，在写一些数据展示的时候，基本离不开Adapter这个东西，是的，正如字面意思，它是展示数据的适配器，要正确地展示数据，就得把它给“配好了”。  
+大家都知道，在加载某一个单位数据时，为了不让每一次都去重新加载布局，我们往往会建立一个ViewHolder类，用于暂存在布局，然后在getItem()这个函数中，通过setT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android万能ViewHolder，大大提升你写Adapter的速度">
+<meta property="og:url" content="http://morphin3.github.io/2015/01/07/Android万能ViewHolder，大大提升你写Adapter的速度/index.html">
 <meta property="og:site_name" content="Morphin3's Blog">
-<meta property="og:description" content="Morphin3&apos;s Teeny-tiny World">
+<meta property="og:description" content="场景最近公司发布需求，上线版本的速度非常快。相信写Android的童鞋都有体会，在写一些数据展示的时候，基本离不开Adapter这个东西，是的，正如字面意思，它是展示数据的适配器，要正确地展示数据，就得把它给“配好了”。  
+大家都知道，在加载某一个单位数据时，为了不让每一次都去重新加载布局，我们往往会建立一个ViewHolder类，用于暂存在布局，然后在getItem()这个函数中，通过setT">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Morphin3's Blog">
-<meta name="twitter:description" content="Morphin3&apos;s Teeny-tiny World">
+<meta name="twitter:title" content="Android万能ViewHolder，大大提升你写Adapter的速度">
+<meta name="twitter:description" content="场景最近公司发布需求，上线版本的速度非常快。相信写Android的童鞋都有体会，在写一些数据展示的时候，基本离不开Adapter这个东西，是的，正如字面意思，它是展示数据的适配器，要正确地展示数据，就得把它给“配好了”。  
+大家都知道，在加载某一个单位数据时，为了不让每一次都去重新加载布局，我们往往会建立一个ViewHolder类，用于暂存在布局，然后在getItem()这个函数中，通过setT">
 
     
     <link rel="alternative" href="/atom.xml" title="Morphin3&#39;s Blog" type="application/atom+xml">
@@ -71,12 +74,10 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/2015/01/07/Android万能ViewHolder，大大提升你写Adapter的速度/" title="Android万能ViewHolder，大大提升你写Adapter的速度" itemprop="url">Android万能ViewHolder，大大提升你写Adapter的速度</a>
@@ -90,9 +91,16 @@
     
   </p>
 </header>
-    <div class="article-content">
-        
-        <h3 id="场景">场景</h3><p>最近公司发布需求，上线版本的速度非常快。<br>相信写Android的童鞋都有体会，在写一些数据展示的时候，基本离不开<code>Adapter</code>这个东西，是的，正如字面意思，它是展示数据的适配器，要正确地展示数据，就得把它给“配好了”。  </p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#场景"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#案例"><span class="toc-number">2.</span> <span class="toc-text">案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分析"><span class="toc-number">3.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法"><span class="toc-number">4.</span> <span class="toc-text">解决方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实际应用"><span class="toc-number">5.</span> <span class="toc-text">实际应用</span></a></li></ol>
+		
+		</div>
+		
+		<h3 id="场景">场景</h3><p>最近公司发布需求，上线版本的速度非常快。<br>相信写Android的童鞋都有体会，在写一些数据展示的时候，基本离不开<code>Adapter</code>这个东西，是的，正如字面意思，它是展示数据的适配器，要正确地展示数据，就得把它给“配好了”。  </p>
 <p>大家都知道，在加载某一个单位数据时，为了不让每一次都去重新加载布局，我们往往会建立一个<code>ViewHolder</code>类，用于暂存在布局，然后在<code>getItem()</code>这个函数中，通过<code>setTag()</code>和<code>getTag()</code>来缓存和重新利用加载的布局。  </p>
 <h3 id="案例">案例</h3><p>我们来看一个例子：<br>假设要设计一个用于展示聊天记录的<code>Listview</code>的<code>Adapter</code>，像微信、qq、易信等，那么它的<code>Adapter</code>大概长这样:</p>
 <pre><code><span class="javadoc">/** 
@@ -393,14 +401,9 @@
         return convertView;
     }
 </code></pre><p>写到这，是不是觉得没有各种<code>ViewHolder</code>类，整个世界都清静了呢哈哈~</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 
@@ -413,376 +416,47 @@
 
 
 
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://morphin3.github.io/2015/01/07/Android万能ViewHolder，大大提升你写Adapter的速度/" data-title="Android万能ViewHolder，大大提升你写Adapter的速度 | Morphin3&#39;s Blog" data-tsina="1807629794" class="share clearfix">
+	  </div>
+	
+	</div>
 
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2015/01/07/Android万能ViewHolder，大大提升你写Adapter的速度/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/01/07/Android万能ViewHolder，大大提升你写Adapter的速度/" data-count-type="comments">&nbsp;</a>
-	
-</div>
 
 </footer>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2014/11/27/Android-单个ListView加载多种布局/" title="Android 单个ListView加载多种布局" itemprop="url">Android 单个ListView加载多种布局</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Morphin3" target="_blank" itemprop="author">Morphin3</a>
-		
-  <p class="article-time">
-    <time datetime="2014-11-27T10:50:46.000Z" itemprop="datePublished"> 发表于 2014-11-27</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h3 id="场景">场景</h3><p>公司上班时候经常会被产品锦鲤提出这样的需求：<br>这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，整个可以下拉刷新或者上拉加载….  </p>
-<p>在我刚开始接到这样的需求时，我把所有可能出现的样式写在同一个布局上，然后在<code>Adapter</code>中<code>getItem()</code>加载布局时，通过判断列表项的position来决定显示的布局（通过设置显示或者隐藏布局中的元素，也就是<code>View.setVisibility(View.VISIBLE);View.setVisibility(View.GONE);</code>）</p>
-<h3 id="当显示的不同种类布局根据列表索引位置有规律可循时">当显示的不同种类布局根据列表索引位置有规律可循时</h3><p>比如，<code>position</code>为0时显示布局A，<code>position</code>为N时显示布局B（可以定义一个全局变量<code>mPosition</code>来保存N），其余显示布局C<br>这么做很容易就能实现  </p>
-<pre><code>@Override
-public View getView(int position, View view, ViewGroup viewGroup) {
-    <span class="keyword">...</span>
-    <span class="keyword">if</span> (position == <span class="number">0</span>) {
-        //显示布局A
-    } <span class="keyword">else</span> <span class="keyword">if</span> (mPosition != -<span class="number">1</span> &amp;&amp; position == mPosition) {
-        //显示布局B
-    } <span class="keyword">else</span> {
-        //显示布局C          
-    }
-    <span class="keyword">...</span>
-}
-</code></pre><h3 id="当显示的不同种类布局根据列表索引位置无关时">当显示的不同种类布局根据列表索引位置无关时</h3><p>但现实中的需求，不同种类的布局往往跟列表索引位置无关，此时单单通过列表索引位置来区分布局已经不现实了。<br>这个时候我们需要某个标识来判断显示何种布局，这也很容易就能实现，与服务端商量在加在的数据<code>Model</code>种加一个字段<code>String type</code>  </p>
-<pre><code>@Override
-public View getView(int position, View view, ViewGroup viewGroup) {
-    <span class="keyword">...</span>
-    Data data = getItem(position);
-    String type = data.getType();
-    <span class="keyword">if</span> (type.equals(<span class="string">"typeA"</span>)) {
-        //显示布局A
-    } <span class="keyword">else</span> <span class="keyword">if</span> (type.equals(<span class="string">"typeB"</span>)) {
-        //显示布局B
-    } <span class="keyword">else</span> <span class="keyword">if</span> (type.equals(<span class="string">"typeC"</span>)){
-        //显示布局C          
-    }<span class="keyword">else</span>
-    <span class="keyword">...</span>
-}
-</code></pre><p>这种方式可以满足显示任何多种的布局，即便这些布局跟列表索引位置毫无关系。<br>这样就万事大吉了吗？不，问题总是源源不断的。<br>假设我们要显示的布局种类有10种，那么在显示某一种布局的时候，就会有这样壮观（爆炸了）的代码出现:  </p>
-<pre><code>@Override
-public <span class="keyword">View</span> getView(int position, <span class="keyword">View</span> <span class="keyword">view</span>, ViewGroup viewGroup) {
-    ...
-    Data data = getItem(position);
-    String <span class="keyword">type</span> = data.getType();
-    <span class="keyword">if</span> (<span class="keyword">type</span>.equals(<span class="string">"typeA"</span>)) {
-        <span class="comment">//显示布局A</span>
-        layoutA.setVisibility(<span class="keyword">View</span>.VISIBLE);
-        layoutB.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutC.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutD.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutE.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutF.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutG.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutH.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutI.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutJ.setVisibility(<span class="keyword">View</span>.GONE);
-    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">type</span>.equals(<span class="string">"typeB"</span>)) {
-        <span class="comment">//显示布局B</span>
-        layoutA.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutB.setVisibility(<span class="keyword">View</span>.VISIBLE);
-        layoutC.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutD.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutE.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutF.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutG.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutH.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutI.setVisibility(<span class="keyword">View</span>.GONE);
-        layoutJ.setVisibility(<span class="keyword">View</span>.GONE);
-    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">type</span>.equals(<span class="string">"typeC"</span>)){
-        <span class="comment">//显示布局C          </span>
-    }<span class="keyword">else</span>
-    ...
-}
-</code></pre><p>显示某一种的同时，必须隐藏掉另外的任何一种，呵呵，假设以后又冒出来一个第11种布局，那么每个分支中就又要再添加代码来显示或者隐藏那个布局。<br>什么，每个分支都要改？！<br>Bang！！！！这显然不是很好的解决方法。  </p>
-<h3 id="合理的解决方案">合理的解决方案</h3><p>那么怎样才是最好的解决方法呢？<br>看一下<code>BaseAdapter</code>的文档发现有两个没有用过的方法，<code>getViewTypeCount()</code> 和 <code>getItemViewType()</code>，前者可以返回布局类型总数，后者则可以返回具体使用哪种视图。具体可参见官方<a href="http://developer.android.com/reference/android/widget/Adapter.html" title="Adapter" target="_blank" rel="external">SDK</a></p>
-<p>首先先定义好布局类型常量，如果是10种，就定义10个，另外需要再定义一个常亮保存类型总数。还是跟之前一样，假设我们跟服务端约定好要加载的数据model中有一个字段用于区分布局类型，这次我们用<code>int</code>类型，也就是定义一个字段<code>int type</code>  </p>
-<pre><code><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_A = <span class="number">0</span>;   <span class="comment">//类型A</span>
-<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_B = <span class="number">1</span>;   <span class="comment">//类型B</span>
-<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_C = <span class="number">2</span>;   <span class="comment">//类型C</span>
-...
-<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_COUNT = <span class="number">10</span>;   <span class="comment">//类型总数</span>
-</code></pre><p>在<code>Adapter</code>中重写<code>getViewTypeCount()</code> 和 <code>getItemViewType()</code>方法</p>
-<pre><code><span class="annotation">@Override</span>
-<span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">getViewTypeCount</span><span class="params">()</span> </span>{
-    <span class="keyword">return</span> TYPE_COUNT;
-}
-
-<span class="annotation">@Override</span>
-<span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">getItemViewType</span><span class="params">(<span class="keyword">int</span> position)</span> </span>{
-    Data data = getItem(position);         <span class="comment">//获得当前索引要加载的数据</span>
-    <span class="keyword">int</span> type = data.getType();             <span class="comment">//获取对应的布局类型</span>
-    <span class="keyword">return</span> type;                           <span class="comment">//并返回</span>
-}
-</code></pre><p>写到这里，可能还不明白这两个函数做什么用的。前面说到所有布局类型都写在同一个布局文件中的缺点，就是要根据布局类型，通过写很多显示或隐藏布局元素来控制布局最终的展现。<br>可不可以将不同的布局类型放在不同的布局文件中，根据布局类型加载对应的布局文件呢？<br>答案是肯定的O(∩<em>∩)O~</em>)<br>怎么做呢？看下面的代码</p>
-<pre><code>@Override
-public View getView(int position, View convertView, ViewGroup viewGroup) {
-    int type = getItemViewType(position);
-    <span class="keyword">if</span> (convertView == null){
-        <span class="keyword">if</span>(type == TYPE_A){
-            <span class="keyword">...</span>
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.layout_a, parent, false);
-            <span class="keyword">...</span>
-        }<span class="keyword">else</span> <span class="keyword">if</span>(type == Type_B){
-            <span class="keyword">...</span>
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.layout_b, parent, false);
-            <span class="keyword">...</span>
-        }<span class="keyword">else</span> <span class="keyword">if</span>(type == Type_C){
-            <span class="keyword">...</span>
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.layout_c, parent, false);
-            <span class="keyword">...</span>
-        }<span class="keyword">else</span>
-        <span class="keyword">...</span>
-    }
-    <span class="keyword">...</span>
-}
-</code></pre><p>是的，先获得布局类型，再根据类型去加载相应的布局文件，然后再进行进一步操作，这样就避免把冗余的布局元素加进来，也当然不需要通过<code>View.setVisibility()</code>来控制布局元素的显示或者隐藏了。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/android/">android</a><a href="/tags/listview/">listview</a><a href="/tags/布局/">布局</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
+   	       
+	</article>
 	
-	  	<span></span>
-		<a href="/2014/11/27/Android-单个ListView加载多种布局/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/11/27/Android-单个ListView加载多种布局/" data-count-type="comments">&nbsp;</a>
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2014/11/27/Android-单个ListView加载多种布局/"  title="Android 单个ListView加载多种布局">
+ <strong>下一篇：</strong><br/> 
+ <span>Android 单个ListView加载多种布局
+</span>
+</a>
+</div>
+
+</nav>
+
 	
-</div>
-
-</footer>
-
-
-    </article>
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/01/07/Android万能ViewHolder，大大提升你写Adapter的速度/" data-title="Android万能ViewHolder，大大提升你写Adapter的速度" data-url="http://morphin3.github.io/2015/01/07/Android万能ViewHolder，大大提升你写Adapter的速度/"></div>
+</section>
 
 
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2014/10/26/MarkDown正确的学习姿势/" title="MarkDown正确的学习姿势" itemprop="url">MarkDown正确的学习姿势</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Morphin3" target="_blank" itemprop="author">Morphin3</a>
-		
-  <p class="article-time">
-    <time datetime="2014-10-25T16:36:56.000Z" itemprop="datePublished"> 发表于 2014-10-26</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/guide/">guide</a><a href="/tags/教程/">教程</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2014/10/26/MarkDown正确的学习姿势/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/10/26/MarkDown正确的学习姿势/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2014/09/11/My-Journey/" title="My Journey" itemprop="url">My Journey</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Morphin3" target="_blank" itemprop="author">Morphin3</a>
-		
-  <p class="article-time">
-    <time datetime="2014-09-11T12:11:50.000Z" itemprop="datePublished"> 发表于 2014-09-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如果说学习是一趟旅程，那么写下一点什么作记录就是一件非常有意义的事。<br>从小到大一直认为自己是个能“记事”的人，初中高中当周围的同学纷纷说已经忘记某小学同学的名字或样貌时我还洋洋得意自己还记得清清楚楚。<br>哪知岁月还真的是把杀猪刀…<br>现在，我逐渐开始觉得自己的“记忆力” “力不从心”了，也真的忘记自己小学一二年级同桌是谁，长什么样叫什么名字了，真的是我年纪见长，记忆力下降了吗？<br>Technically，并不是。<br>我觉得主要原因还是自己接触的东西越来越多，确实不可能记住所有时间的所有事情。大脑容量毕竟有限，要记住或者不停地去重新回忆记起某些事必然会烧死很多脑细胞啦！为了自保，不浪费我们珍贵的脑细胞，大脑会筛选出重要的信息记录下来，而那些不那么重要的也就gone with the wind了…<br>那么问题来了…<br>怎样有效的记录一些重要的事情呢？！<br>俗话说，“好记性不如烂笔头”，在学习知识的道路上更加如此。<br>那么，开始记录吧。</p>
-<p>I’m on my way.</p>
-<p><img src="/img/My-Journey/journey.jpg" alt="Journey" title="Journey"></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/life/">life</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2014/09/11/My-Journey/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/09/11/My-Journey/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2014/08/26/Hexo你的博客/" title="博客被Hexo了" itemprop="url">博客被Hexo了</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Morphin3" target="_blank" itemprop="author">Morphin3</a>
-		
-  <p class="article-time">
-    <time datetime="2014-08-26T03:11:50.000Z" itemprop="datePublished"> 发表于 2014-08-26</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>用Hexo搭建基于Github的静态博客非常方便，可以让用户更加专注于写文字了.<br>妈妈再也不用担心我写博客步骤繁琐了.</p>
-<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/guide/">guide</a><a href="/tags/教程/">教程</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2014/08/26/Hexo你的博客/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/08/26/Hexo你的博客/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-</div>
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#场景"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#案例"><span class="toc-number">2.</span> <span class="toc-text">案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分析"><span class="toc-number">3.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法"><span class="toc-number">4.</span> <span class="toc-text">解决方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实际应用"><span class="toc-number">5.</span> <span class="toc-text">实际应用</span></a></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
@@ -947,12 +621,69 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
 
 
 
@@ -1025,4 +756,4 @@ $(document).ready(function(){
 <!-- Tiny_search End -->
 
   </body>
- </html>
+</html>
