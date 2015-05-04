@@ -11,15 +11,18 @@
     
 
     
-    <meta name="description" content="Android 单个ListView加载多种布局平时写程序的时候经常会被产品锦鲤提出这样的需求：这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，这个可以下拉刷新或者上拉加载…">
+    <meta name="description" content="场景公司上班时候经常会被产品锦鲤提出这样的需求：这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，整个可以下拉刷新或者上拉加载….  
+在我刚开始接到这样的需求时，我把所有可能出现的样式写在同一个布局上，然后在Adapter中getItem()加载布局时，通过判断列表项的position来决定显示的布局（通过设置显示或者隐藏布局中的元素，也就是View.setVisibility(V">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 单个ListView加载多种布局">
 <meta property="og:url" content="http://morphin3.github.io/2014/08/18/Android-单个ListView加载多种布局/index.html">
 <meta property="og:site_name" content="Morphin3's Blog">
-<meta property="og:description" content="Android 单个ListView加载多种布局平时写程序的时候经常会被产品锦鲤提出这样的需求：这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，这个可以下拉刷新或者上拉加载…">
+<meta property="og:description" content="场景公司上班时候经常会被产品锦鲤提出这样的需求：这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，整个可以下拉刷新或者上拉加载….  
+在我刚开始接到这样的需求时，我把所有可能出现的样式写在同一个布局上，然后在Adapter中getItem()加载布局时，通过判断列表项的position来决定显示的布局（通过设置显示或者隐藏布局中的元素，也就是View.setVisibility(V">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 单个ListView加载多种布局">
-<meta name="twitter:description" content="Android 单个ListView加载多种布局平时写程序的时候经常会被产品锦鲤提出这样的需求：这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，这个可以下拉刷新或者上拉加载…">
+<meta name="twitter:description" content="场景公司上班时候经常会被产品锦鲤提出这样的需求：这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，整个可以下拉刷新或者上拉加载….  
+在我刚开始接到这样的需求时，我把所有可能出现的样式写在同一个布局上，然后在Adapter中getItem()加载布局时，通过判断列表项的position来决定显示的布局（通过设置显示或者隐藏布局中的元素，也就是View.setVisibility(V">
 
     
     <link rel="alternative" href="/atom.xml" title="Morphin3&#39;s Blog" type="application/atom+xml">
@@ -95,11 +98,118 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#场景"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置有规律可循时"><span class="toc-number">2.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置有规律可循时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置无关时"><span class="toc-number">3.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置无关时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#合理的解决方案"><span class="toc-number">4.</span> <span class="toc-text">合理的解决方案</span></a></li></ol>
 		
 		</div>
 		
-		<p>Android 单个ListView加载多种布局<br>平时写程序的时候经常会被产品锦鲤提出这样的需求：<br>这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，这个可以下拉刷新或者上拉加载…  </p>
+		<h2 id="场景">场景</h2><p>公司上班时候经常会被产品锦鲤提出这样的需求：<br>这个是一个列表，上面这个长这样，中间这个长这样，下面这个长这样，整个可以下拉刷新或者上拉加载….  </p>
+<p>在我刚开始接到这样的需求时，我把所有可能出现的样式写在同一个布局上，然后在<code>Adapter</code>中<code>getItem()</code>加载布局时，通过判断列表项的position来决定显示的布局（通过设置显示或者隐藏布局中的元素，也就是<code>View.setVisibility(View.VISIBLE);View.setVisibility(View.GONE);</code>）</p>
+<h2 id="当显示的不同种类布局根据列表索引位置有规律可循时">当显示的不同种类布局根据列表索引位置有规律可循时</h2><p>比如，<code>position</code>为0时显示布局A，<code>position</code>为N时显示布局B（可以定义一个全局变量<code>mPosition</code>来保存N），其余显示布局C<br>这么做很容易就能实现  </p>
+<pre><code>@Override
+public View getView(int position, View view, ViewGroup viewGroup) {
+    <span class="keyword">...</span>
+    <span class="keyword">if</span> (position == <span class="number">0</span>) {
+        //显示布局A
+    } <span class="keyword">else</span> <span class="keyword">if</span> (mPosition != -<span class="number">1</span> &amp;&amp; position == mPosition) {
+        //显示布局B
+    } <span class="keyword">else</span> {
+        //显示布局C          
+    }
+    <span class="keyword">...</span>
+}
+</code></pre><h2 id="当显示的不同种类布局根据列表索引位置无关时">当显示的不同种类布局根据列表索引位置无关时</h2><p>但现实中的需求，不同种类的布局往往跟列表索引位置无关，此时单单通过列表索引位置来区分布局已经不现实了。<br>这个时候我们需要某个标识来判断显示何种布局，这也很容易就能实现，与服务端商量在加在的数据<code>Model</code>种加一个字段<code>String type</code>  </p>
+<pre><code>@Override
+public View getView(int position, View view, ViewGroup viewGroup) {
+    <span class="keyword">...</span>
+    Data data = getItem(position);
+    String type = data.getType();
+    <span class="keyword">if</span> (type.equals(<span class="string">"typeA"</span>)) {
+        //显示布局A
+    } <span class="keyword">else</span> <span class="keyword">if</span> (type.equals(<span class="string">"typeB"</span>)) {
+        //显示布局B
+    } <span class="keyword">else</span> <span class="keyword">if</span> (type.equals(<span class="string">"typeC"</span>)){
+        //显示布局C          
+    }<span class="keyword">else</span>
+    <span class="keyword">...</span>
+}
+</code></pre><p>这种方式可以满足显示任何多种的布局，即便这些布局跟列表索引位置毫无关系。<br>这样就万事大吉了吗？不，问题总是源源不断的。<br>假设我们要显示的布局种类有10种，那么在显示某一种布局的时候，就会有这样壮观（爆炸了）的代码出现:  </p>
+<pre><code>@Override
+public <span class="keyword">View</span> getView(int position, <span class="keyword">View</span> <span class="keyword">view</span>, ViewGroup viewGroup) {
+    ...
+    Data data = getItem(position);
+    String <span class="keyword">type</span> = data.getType();
+    <span class="keyword">if</span> (<span class="keyword">type</span>.equals(<span class="string">"typeA"</span>)) {
+        <span class="comment">//显示布局A</span>
+        layoutA.setVisibility(<span class="keyword">View</span>.VISIBLE);
+        layoutB.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutC.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutD.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutE.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutF.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutG.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutH.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutI.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutJ.setVisibility(<span class="keyword">View</span>.GONE);
+    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">type</span>.equals(<span class="string">"typeB"</span>)) {
+        <span class="comment">//显示布局B</span>
+        layoutA.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutB.setVisibility(<span class="keyword">View</span>.VISIBLE);
+        layoutC.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutD.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutE.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutF.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutG.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutH.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutI.setVisibility(<span class="keyword">View</span>.GONE);
+        layoutJ.setVisibility(<span class="keyword">View</span>.GONE);
+    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">type</span>.equals(<span class="string">"typeC"</span>)){
+        <span class="comment">//显示布局C          </span>
+    }<span class="keyword">else</span>
+    ...
+}
+</code></pre><p>显示某一种的同时，必须隐藏掉另外的任何一种，呵呵，假设以后又冒出来一个第11种布局，那么每个分支中就又要再添加代码来显示或者隐藏那个布局。<br>什么，每个分支都要改？！<br>Bang！！！！这显然不是很好的解决方法。  </p>
+<h2 id="合理的解决方案">合理的解决方案</h2><p>那么怎样才是最好的解决方法呢？<br>看一下<code>BaseAdapter</code>的文档发现有两个没有用过的方法，<code>getViewTypeCount()</code> 和 <code>getItemViewType()</code>，前者可以返回布局类型总数，后者则可以返回具体使用哪种视图。具体可参见官方<a href="http://developer.android.com/reference/android/widget/Adapter.html" title="Adapter" target="_blank" rel="external">SDK</a></p>
+<p>首先先定义好布局类型常量，如果是10种，就定义10个，另外需要再定义一个常亮保存类型总数。还是跟之前一样，假设我们跟服务端约定好要加载的数据model中有一个字段用于区分布局类型，这次我们用<code>int</code>类型，也就是定义一个字段<code>int type</code>  </p>
+<pre><code><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_A = <span class="number">0</span>;   <span class="comment">//类型A</span>
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_B = <span class="number">1</span>;   <span class="comment">//类型B</span>
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_C = <span class="number">2</span>;   <span class="comment">//类型C</span>
+...
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_COUNT = <span class="number">10</span>;   <span class="comment">//类型总数</span>
+</code></pre><p>在<code>Adapter</code>中重写<code>getViewTypeCount()</code> 和 <code>getItemViewType()</code>方法</p>
+<pre><code><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">getViewTypeCount</span><span class="params">()</span> </span>{
+    <span class="keyword">return</span> TYPE_COUNT;
+}
+
+<span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">getItemViewType</span><span class="params">(<span class="keyword">int</span> position)</span> </span>{
+    Data data = getItem(position);         <span class="comment">//获得当前索引要加载的数据</span>
+    <span class="keyword">int</span> type = data.getType();             <span class="comment">//获取对应的布局类型</span>
+    <span class="keyword">return</span> type;                           <span class="comment">//并返回</span>
+}
+</code></pre><p>写到这里，可能还不明白这两个函数做什么用的。前面说到所有布局类型都写在同一个布局文件中的缺点，就是要根据布局类型，通过写很多显示或隐藏布局元素来控制布局最终的展现。<br>可不可以将不同的布局类型放在不同的布局文件中，根据布局类型加载对应的布局文件呢？<br>答案是肯定的O(∩<em>∩)O~</em>)<br>怎么做呢？看下面的代码</p>
+<pre><code>@Override
+public View getView(int position, View convertView, ViewGroup viewGroup) {
+    int type = getItemViewType(position);
+    <span class="keyword">if</span> (convertView == null){
+        <span class="keyword">if</span>(type == TYPE_A){
+            <span class="keyword">...</span>
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.layout_a, parent, false);
+            <span class="keyword">...</span>
+        }<span class="keyword">else</span> <span class="keyword">if</span>(type == Type_B){
+            <span class="keyword">...</span>
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.layout_b, parent, false);
+            <span class="keyword">...</span>
+        }<span class="keyword">else</span> <span class="keyword">if</span>(type == Type_C){
+            <span class="keyword">...</span>
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.layout_c, parent, false);
+            <span class="keyword">...</span>
+        }<span class="keyword">else</span>
+        <span class="keyword">...</span>
+    }
+    <span class="keyword">...</span>
+}
+</code></pre><p>是的，先获得布局类型，再根据类型去加载相应的布局文件，然后再进行进一步操作，这样就避免把冗余的布局元素加进来，也当然不需要通过<code>View.setVisibility()</code>来控制布局元素的显示或者隐藏了。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -153,7 +263,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#场景"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置有规律可循时"><span class="toc-number">2.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置有规律可循时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当显示的不同种类布局根据列表索引位置无关时"><span class="toc-number">3.</span> <span class="toc-text">当显示的不同种类布局根据列表索引位置无关时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#合理的解决方案"><span class="toc-number">4.</span> <span class="toc-text">合理的解决方案</span></a></li></ol>
  
   </div>
 
